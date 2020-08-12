@@ -9,7 +9,7 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 object SunnyWeatherNetwork {
-
+    //第一阶段
     private val placeService = ServiceCreator.create(PlaceService::class.java)
 
     suspend fun searchPlaces(query: String) = placeService.searchPlaces(query).await()
@@ -29,5 +29,14 @@ object SunnyWeatherNetwork {
             })
         }
     }
+
+    //第二阶段 对新增的 WeatherService 接口进行封装
+    private val weatherService = ServiceCreator.create(WeatherService::class.java)
+    suspend fun getRealtimeWeather(lng: String, lat: String) =
+        weatherService.getRealtimeWeather(lng, lat).await()
+
+    suspend fun getDailyWeather(lng: String, lat: String) =
+        weatherService.getDailyWeather(lng, lat).await()
+
 
 }
