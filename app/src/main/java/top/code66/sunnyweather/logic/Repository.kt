@@ -6,6 +6,7 @@ import top.code66.sunnyweather.logic.model.Place
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import top.code66.sunnyweather.logic.dao.PlaceDao
 import top.code66.sunnyweather.logic.model.Weather
 import java.sql.ResultSet
 import kotlin.coroutines.CoroutineContext
@@ -101,4 +102,11 @@ object Repository {
             }
         }
     }
+
+    //第三阶段
+    fun savePlace(place: Place) = PlaceDao.savePlace(place)
+
+    fun getSavedPlace() = PlaceDao.getSavedPlace()
+
+    fun isPlaceSaved() = PlaceDao.isPlaceSaved()
 }
