@@ -2,9 +2,11 @@ package top.code66.sunnyweather.ui.weather
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.*
+import android.view.WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
@@ -30,14 +32,18 @@ class WeatherActivity : AppCompatActivity() {
         .get(WeatherViewModel::class.java) }
 
     @SuppressLint("WrongConstant")
-    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //将背景图与状态栏融合(全屏显示)
         val decorView = window.decorView
-        decorView.windowInsetsController?.also {
-           it.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-           it.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            decorView.windowInsetsController?.also {
+               it.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+               it.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_BARS_BY_SWIPE
+            }
+        } else {
+            decorView.systemUiVisibility = View.STATUS_BAR_HIDDEN or
+                    View.SYSTEM_UI_FLAG_FULLSCREEN
         }
         setContentView(R.layout.activity_weather)
         if(viewModel.locationLng.isEmpty()) {
